@@ -23,5 +23,8 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Disable GPG signing
+        run: git config --global commit.gpgSign false
+
       - name: Build and test
-        run: mvn clean verify -P coverage
+        run: mvn clean verify -P coverage -Dgpg.skip=true
