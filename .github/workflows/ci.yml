@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Maven
+        run: sudo apt-get update && sudo apt-get install -y maven
+
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
@@ -37,14 +40,7 @@ jobs:
             GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
       - name: List GPG Keys
-        run: gpg --list-secret-keys
-
-      - name: Debugging Information
-        run: |
-            echo "Environment Variables:"
-            env
-            echo "GPG Home Directory Contents:"
-            ls -la $HOME/.gnupg
+        run: gpg --list-secret-keys --keyid-format LONG
 
       - name: Set GPG passphrase
         run: export GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
@@ -56,4 +52,3 @@ jobs:
             -Dgpg.homedir=$HOME/.gnupg \
             -Dgpg.executable=gpg2 \
             -Dgpg.defaultKeyring=true \
-            -Dgpg.pinentry-mode=loopback
