@@ -45,7 +45,7 @@ jobs:
       - name: Build and Sign Artifacts
         run: |
             export GPG_TTY=$(tty)
-            mvn clean verify -P coverage -DskipTest=true -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            mvn clean verify -P coverage -DskipTests=true -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
             -Dgpg.homedir=$HOME/.gnupg \
             -Dgpg.executable=gpg2 \
             -Dgpg.defaultKeyring=true \
