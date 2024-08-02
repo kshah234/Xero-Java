@@ -35,4 +35,10 @@ jobs:
         run: export GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
 
       - name: Build and Sign Artifacts
-        run: mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          export GPG_TTY=$(tty)
+          mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+          -Dgpg.homedir=$HOME/.gnupg \
+          -Dgpg.executable=gpg2 \
+          -Dgpg.defaultKeyring=true \
+          -Dgpg.pinentry-mode=loopback
