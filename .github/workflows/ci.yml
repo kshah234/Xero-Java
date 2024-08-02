@@ -39,6 +39,13 @@ jobs:
       - name: List GPG Keys
         run: gpg --list-secret-keys
 
+      - name: Debugging Information
+        run: |
+            echo "Environment Variables:"
+            env
+            echo "GPG Home Directory Contents:"
+            ls -la $HOME/.gnupg
+
       - name: Set GPG passphrase
         run: export GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
 
