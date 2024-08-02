@@ -26,19 +26,30 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Install GPG
+        run: sudo apt-get update && sudo apt-get install -y gnupg2
+
+      - name: Setup GPG Home Directory
+        run: |
+            mkdir -p $HOME/.gnupg
+            chmod 700 $HOME/.gnupg
+
       - name: Import GPG private key
         run: echo "$GPG_PRIVATE_KEY" | gpg --batch --import
         env:
             GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: List GPG Keys
+        run: gpg --list-secret-keys
 
       - name: Set GPG passphrase
         run: export GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
 
       - name: Build and Sign Artifacts
         run: |
-          export GPG_TTY=$(tty)
-          mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-          -Dgpg.homedir=$HOME/.gnupg \
-          -Dgpg.executable=gpg2 \
-          -Dgpg.defaultKeyring=true \
-          -Dgpg.pinentry-mode=loopback
+            export GPG_TTY=$(tty)
+            mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            Dgpg.homedir=$HOME/.gnupg \
+            -Dgpg.executable=gpg2 \
+            -Dgpg.defaultKeyring=true \
+            -Dgpg.pinentry-mode=loopback
