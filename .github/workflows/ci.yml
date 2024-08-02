@@ -17,9 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Maven
-        run: sudo apt-get update && sudo apt-get install -y maven
-
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
@@ -48,8 +45,8 @@ jobs:
       - name: Build and Sign Artifacts
         run: |
             export GPG_TTY=$(tty)
-            mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-            Dgpg.homedir=$HOME/.gnupg \
+            mvn clean verify -P coverage -DskipTest=true -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            -Dgpg.homedir=$HOME/.gnupg \
             -Dgpg.executable=gpg2 \
             -Dgpg.defaultKeyring=true \
             -Dgpg.pinentry-mode=loopback
