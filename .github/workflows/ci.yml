@@ -27,13 +27,10 @@ jobs:
         env:
             GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
-      - name: List GPG Keys
-        run: gpg --list-secret-keys --keyid-format LONG
-
       - name: Set GPG passphrase
         run: export GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
 
       - name: Build and Sign Artifacts
         run: |
             export GPG_TTY=$(tty)
-            mvn clean verify -P coverage -DskipTests=true -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            mvn clean verify -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
