@@ -257,7 +257,11 @@
 							<goal>sign</goal>
 						</goals>
              <configuration>
-							<passphraseServerId>gpg.passphrase</passphraseServerId>
+                 <gpgArguments>
+                     <arg>--pinentry-mode</arg>
+                     <arg>loopback</arg>
+                 </gpgArguments>
+                 <passphraseServerId>gpg.passphrase</passphraseServerId>
             </configuration>
 					</execution>
 				</executions>
